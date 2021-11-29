@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Sprites/PlayerChasis.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Sprites/PlayerTurret.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sprites/PlayerCannon.png" type="Texture" id=3]
+[ext_resource path="res://Assets/Scripts/Player.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 91.5, 191 )
+
+[node name="Player" type="Sprite"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="Turret" type="Node2D" parent="."]
+
+[node name="Cannon" type="Sprite" parent="Turret"]
+position = Vector2( 0, -225 )
+texture = ExtResource( 3 )
+
+[node name="ShootPosition" type="Position2D" parent="Turret/Cannon"]
+position = Vector2( 0, -125 )
+
+[node name="Turret" type="Sprite" parent="Turret"]
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, -1 )
+shape = SubResource( 1 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+position = Vector2( 0.5, -1 )
+
+[node name="Camera2D2" type="Camera2D" parent="."]
+current = true
+limit_left = 0
+limit_top = 0
+limit_right = 3328
+limit_bottom = 2304
+smoothing_enabled = true
+drag_margin_left = 0.4
+drag_margin_top = 0.4
+drag_margin_right = 0.4
+drag_margin_bottom = 0.4
