@@ -77,15 +77,51 @@ func _process(delta):
 
 # Función que rota la torreta
 func rotate_turret(delta):
+	
+	# Primero obtenemos la posición global de la torreta, es decir,
+	# la posición respecto al punto de origen (0, 0)
 	var global_pos = $Turret.global_transform.get_origin()
+	
+	# Conseguimos la posición global del ratón. También se puede obtener
+	# la posición relativa, pero como la cámara se mueve, no funciona bien.
 	var mouse_position = get_global_mouse_position()
+	
+	# Movemos la mira a la ubicación del
+	# ratón y reiniciamos su rotación
 	$Sight.global_position = mouse_position
 	$Sight.global_rotation = 0
+	
+	# Calculamos el vector que une la posición
+	# del ratón y la posición de la torreta.
+	# Este vector es el resultado de restarle a la
+	# posición de la torreta la del ratón.
 	var target_vect = global_pos - mouse_position
+	
+	# Calculamos el ángulo que forma el vector objetivo
+	# con la función atan2(...). A esta función le pasamos
+	# el valor del eje y del vector como primer parámetro y
+	# el valor del eje x como segundo parámetro. El resultado
+	# es el ángulo que forma el vector con el eje X.
 	var angle = (atan2(target_vect.y, target_vect.x))
+	
+	# Obtenemos la rotación de la torreta
+	# y la guardamos en una variable
 	var turret_rot = $Turret.global_rotation
+	
+	# Corregimos el ángulo resultado de la operación anterior
+	# (está girado 90º). Para esto, comprobamos cuál de los
+	# dos ángulos es mayor, si el actual de rotación de la
+	# torreta o el objetivo. Lo corregimos de esta manera
+	# de forma que el ángulo objetivo siempre es de los 2
+	# posibles el más cercano al que queremos obtener. Es
+	# decir, le restamos 90º o le sumamos 270º según nos
+	# convenga. Nota: el ángulo está en radianes.
 	if angle > turret_rot:
 		angle -= PI / 2
 	else:
 		angle += 3 * PI / 2
+	
+	# Aplicamos la rotación a la torreta. Lo hacemos de
+	# forma global para que no le afecte la rotación del
+	# chasis. Usamos interpolación para que no sea instantáneo.
 	$Turret.global_rotation = lerp(turret_rot, angle, delta * ROTATION_SPEED)
