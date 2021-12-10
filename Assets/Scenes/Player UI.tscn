@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.0980392, 0.890196, 0.109804, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0588235, 0.0470588, 0.0470588, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.937255, 0.764706, 0.196078, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[node name="Player UI" type="CanvasLayer"]
+
+[node name="HP Bar" type="ProgressBar" parent="."]
+margin_left = 6.0
+margin_top = 662.0
+margin_right = 400.0
+margin_bottom = 711.0
+custom_styles/fg = SubResource( 1 )
+custom_styles/bg = SubResource( 2 )
+value = 75.0
+percent_visible = false
+
+[node name="ReloadBar" type="ProgressBar" parent="."]
+margin_left = 1220.0
+margin_top = 714.0
+margin_right = 1614.0
+margin_bottom = 763.0
+rect_rotation = -90.0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 2 )
+value = 75.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}

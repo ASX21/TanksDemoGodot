@@ -1,4 +1,5 @@
-extends Sprite
+extends RigidBody2D
+class_name Player
 
 # Declaración de constantes
 
@@ -13,11 +14,17 @@ const ROTATION_SPEED = 1.25
 # Velocidad de rotación de la torreta
 const TURRET_ROTATION_SPEED = 2.25
 
+export (PackedScene) var UI_SCENE
 # Declaración de variables
 
 # Velocidad actual del vehículo
 var speed = 0
+var health
 
+
+func _ready():
+	var ui = UI_SCENE.instance()
+	self.add_child(ui)
 
 # Esta función es llamada una vez por fotograma.
 # El parámetro delta es el tiempo transcurrido entre el fotograma actual y el anterior.
@@ -72,7 +79,8 @@ func _process(delta):
 	# Por último, multiplicamos el vector de la dirección por la
 	# velocidad actual del vehículo. El resultado de esto va a ser en
 	# cuánto va a cambiar su posición.
-	position += Vector2(-sin(rotation), cos(rotation)).normalized() * speed
+	# position += Vector2(-sin(rotation), cos(rotation)).normalized() * speed
+	
 
 
 # Función que rota la torreta
@@ -80,7 +88,7 @@ func rotate_turret(delta):
 	
 	# Primero obtenemos la posición global de la torreta, es decir,
 	# la posición respecto al punto de origen (0, 0)
-	var global_pos = $Turret.global_transform.get_origin()
+	var global_pos = $Sprites/Turret.global_transform.get_origin()
 	
 	# Conseguimos la posición global del ratón. También se puede obtener
 	# la posición relativa, pero como la cámara se mueve, no funciona bien.
@@ -106,7 +114,7 @@ func rotate_turret(delta):
 	
 	# Obtenemos la rotación de la torreta
 	# y la guardamos en una variable
-	var turret_rot = $Turret.global_rotation
+	var turret_rot = $Sprites/Turret.global_rotation
 	
 	# Corregimos el ángulo resultado de la operación anterior
 	# (está girado 90º). Para esto, comprobamos cuál de los
@@ -124,4 +132,4 @@ func rotate_turret(delta):
 	# Aplicamos la rotación a la torreta. Lo hacemos de
 	# forma global para que no le afecte la rotación del
 	# chasis. Usamos interpolación para que no sea instantáneo.
-	$Turret.global_rotation = lerp(turret_rot, angle, delta * ROTATION_SPEED)
+	$Sprites/Turret.global_rotation = lerp(turret_rot, angle, delta * ROTATION_SPEED)
