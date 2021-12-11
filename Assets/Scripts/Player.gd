@@ -25,11 +25,16 @@ var health
 # Variable que nos da acceso a la interfaz
 var ui
 
+# La palabra clave "export" permite cambiar
+# el valor de la variable desde el editor.
+# La variable aparece como un campo en
+# el inspector. El tipo hay que indicarlo
+# entre paréntesis con el nombre de la clase.
+
 # Escena empaquetada que contiene la interfaz del jugador
 export (PackedScene) var ui_scene
 # Escena empaquetada que representa un proyectil
 export (PackedScene) var projectile
-
 # Declaración de señales
 
 # Señal de muerte del jugador
@@ -37,7 +42,7 @@ signal player_died
 signal shot(time)
 
 # La función ready se ejecuta cuando
-# se crea unainstancia del jugador.
+# se crea una instancia del jugador.
 func _ready():
 	# Ponemos la salud del jugador a su valor inicial
 	health = 10
@@ -51,7 +56,6 @@ func _ready():
 # El parámetro delta es el tiempo transcurrido entre el fotograma actual y el anterior.
 # Delta tiene la función de suavizar el movimiento, ya que si no lo usásemos al cambiar
 # los FPS del juego, cambiaría la velocidad a la que, en este caso, se mueve el tanque.
-
 func _process(delta):
 	
 	# Llamamos a la función que rota la torreta y le pasamos el parámetro delta.
@@ -162,8 +166,23 @@ func rotate_turret(delta):
 	# chasis. Usamos interpolación para que no sea instantáneo.
 	$Sprites/Turret.global_rotation = lerp(turret_rot, angle, delta * ROTATION_SPEED)
 
+# Función que se ejecuta al hacer click izquierdo.
+# Representa un proyectil APFSDS, que al ser muy
+# rápido en la vida real, se usa un raycast
+# en vez de usar un proyectil físico.
 func shoot_ap():
 	pass
-
+	
+# Función que se ejecuta al hacer click derecho.
+# Representa un proyectil HEAT-FS, que al ser
+# más lento, se usa un proyectil físico.
 func shoot_he():
 	pass
+
+# Sobreescribimos la función
+# get_class(), ya que por
+# defecto devuelve "Node2D"
+# y nos interesa que
+# devuelva "Player".
+func get_class():
+	return "Player"
