@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends Node2D
 class_name Player
 
 # Declaración de constantes
@@ -13,17 +13,38 @@ const FORWARD_SPEED = -5
 const ROTATION_SPEED = 1.25
 # Velocidad de rotación de la torreta
 const TURRET_ROTATION_SPEED = 2.25
+# Tiempo de recarga
+const RELOAD_TIME = 1.5
 
-export (PackedScene) var UI_SCENE
 # Declaración de variables
 
 # Velocidad actual del vehículo
 var speed = 0
+# Salud del jugador
 var health
+# Variable que nos da acceso a la interfaz
+var ui
 
+# Escena empaquetada que contiene la interfaz del jugador
+export (PackedScene) var ui_scene
+# Escena empaquetada que representa un proyectil
+export (PackedScene) var projectile
 
+# Declaración de señales
+
+# Señal de muerte del jugador
+signal player_died
+signal shot(time)
+
+# La función ready se ejecuta cuando
+# se crea unainstancia del jugador.
 func _ready():
-	var ui = UI_SCENE.instance()
+	# Ponemos la salud del jugador a su valor inicial
+	health = 10
+	# Creamos una instancia de la escena 
+	ui = ui_scene.instance()
+	ui.set_health(health)
+	self.connect("shot", ui, "shot")
 	self.add_child(ui)
 
 # Esta función es llamada una vez por fotograma.
@@ -79,8 +100,15 @@ func _process(delta):
 	# Por último, multiplicamos el vector de la dirección por la
 	# velocidad actual del vehículo. El resultado de esto va a ser en
 	# cuánto va a cambiar su posición.
-	# position += Vector2(-sin(rotation), cos(rotation)).normalized() * speed
-	
+	position += Vector2(-sin(rotation), cos(rotation)).normalized() * speed
+	position.x = clamp(position.x, 0, 3328)
+	position.y = clamp(position.y, 0, 2304)
+	if Input.is_mouse_button_pressed(1):
+		shoot_ap()
+		emit_signal("shot", RELOAD_TIME)
+	elif Input.is_mouse_button_pressed(2):
+		shoot_he()
+		emit_signal("shot", RELOAD_TIME)
 
 
 # Función que rota la torreta
@@ -133,3 +161,9 @@ func rotate_turret(delta):
 	# forma global para que no le afecte la rotación del
 	# chasis. Usamos interpolación para que no sea instantáneo.
 	$Sprites/Turret.global_rotation = lerp(turret_rot, angle, delta * ROTATION_SPEED)
+
+func shoot_ap():
+	pass
+
+func shoot_he():
+	pass

@@ -5,9 +5,9 @@
 [ext_resource path="res://Assets/Styles/Orbitron-Black.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/Scenes/Player.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Styles/Orbitron-Bold.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://Assets/Scenes/Root.gd" type="Script" id=6]
+[ext_resource path="res://Assets/Scripts/Root.gd" type="Script" id=6]
 [ext_resource path="res://Assets/Styles/Theme.tres" type="Theme" id=7]
-[ext_resource path="res://Assets/Scenes/PauseMenu.gd" type="Script" id=8]
+[ext_resource path="res://Assets/Scripts/PauseMenu.gd" type="Script" id=8]
 [ext_resource path="res://Assets/Tilesets/TileSetGrassMap.tres" type="TileSet" id=9]
 
 [sub_resource type="ConvexPolygonShape2D" id=5]
@@ -190,6 +190,7 @@ __meta__ = {
 }
 
 [node name="InGame" type="Control" parent="Menus"]
+visible = false
 margin_right = 40.0
 margin_bottom = 40.0
 __meta__ = {
