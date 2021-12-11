@@ -121,7 +121,3 @@ func _on_Spawner_timeout():
 	enemy.add_to_group("Enemies")
 	add_child(enemy)
 
-# Función que se ejecuta al
-# darle al botón "Exit".
-func _on_Exit_pressed():
-	get_tree().quit(0)

@@ -117,32 +117,20 @@ custom_constants/separation = 50
 alignment = 1
 
 [node name="Title" type="RichTextLabel" parent="Menus/MainMenu/HBoxContainer/VBoxContainer"]
-margin_top = 160.0
+margin_top = 235.0
 margin_right = 300.0
-margin_bottom = 260.0
+margin_bottom = 335.0
 rect_min_size = Vector2( 300, 100 )
 custom_fonts/normal_font = SubResource( 3 )
 text = "Godot Tanks Demo"
 
 [node name="Play" type="Button" parent="Menus/MainMenu/HBoxContainer/VBoxContainer"]
-margin_top = 310.0
+margin_top = 385.0
 margin_right = 300.0
-margin_bottom = 410.0
+margin_bottom = 485.0
 rect_min_size = Vector2( 300, 100 )
 custom_fonts/font = SubResource( 2 )
 text = "PLAY"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Exit" type="Button" parent="Menus/MainMenu/HBoxContainer/VBoxContainer"]
-margin_top = 460.0
-margin_right = 300.0
-margin_bottom = 560.0
-rect_min_size = Vector2( 300, 100 )
-custom_constants/hseparation = 50
-custom_fonts/font = SubResource( 2 )
-text = "EXIT"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -224,7 +212,6 @@ curve = SubResource( 6 )
 [node name="SpawnPosition" type="PathFollow2D" parent="SpawnPositions"]
 
 [connection signal="pressed" from="Menus/MainMenu/HBoxContainer/VBoxContainer/Play" to="." method="_on_Play_pressed"]
-[connection signal="pressed" from="Menus/MainMenu/HBoxContainer/VBoxContainer/Exit" to="." method="_on_Exit_pressed"]
 [connection signal="pressed" from="Menus/PauseMenu/HBoxContainer/VBoxContainer/Resume" to="Menus/PauseMenu" method="_on_Resume_pressed"]
 [connection signal="pressed" from="Menus/InGame/Pause" to="." method="_on_Pause_pressed"]
 [connection signal="timeout" from="Spawner" to="." method="_on_Spawner_timeout"]
