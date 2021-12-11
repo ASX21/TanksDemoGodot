@@ -4,6 +4,8 @@ extends Node
 
 # Variable que contiene la escena empaquetada del jugador
 export (PackedScene) var PlayerScene
+# Variable que contiene la escena empaquetada del enemigo
+export (PackedScene) var EnemyScene
 
 # La función ready se ejecuta cuando
 # se crea una instancia, en este
@@ -46,6 +48,11 @@ func _on_Play_pressed():
 	# para que al morir vuelva al menú.
 	player.connect("player_died", self, "end_game")
 	
+	# Cambiamos el nombre al nodo
+	# para poder encontrarlo más
+	# fácilmente. Esto solo cambia
+	# el nombre de la instancia.
+	player.name = "Player"
 	# Añadimos el nodo del jugador a
 	# la escena. Antes únicamente
 	# habíamos creado el nodo.
@@ -78,10 +85,11 @@ func return_menu():
 # Función que se ejecuta al terminar la partida.
 # Se ejecuta ya sea por volver al menú o morir el jugador.
 func end_game():
-	
 	# Mostramos el menú principal
 	$Menus/MainMenu.show()
 	
+	# Detenemos el temporizador
+	$Spawner.stop()
 	# Este bucle recorre cada uno
 	# de los elementos hijos de Root.
 	for child in self.get_children():
@@ -89,7 +97,7 @@ func end_game():
 		# Comprobamos si la clase del
 		# nodo hijo es "Player" o si el
 		# nodo está en el grupo "Enemies".
-		if child.get_class() == "Player" || child.is_in_group("Enemies"):
+		if child.get_class() == "Player" or child.is_in_group("Enemies"):
 			
 			# En caso de que sea así, se elimina 
 			# el nodo hijo de la escena.
@@ -98,6 +106,7 @@ func end_game():
 			# Eliminamos el nodo
 			# hijo de forma segura.
 			child.queue_free()
+	
 
 
 # Función que se ejecuta al llegar el
@@ -105,4 +114,14 @@ func end_game():
 # aparecer un enemigo en un punto aleatorio
 # de la curva definida en SpawnPositions.
 func _on_Spawner_timeout():
-	pass # Replace with function body.
+	
+	$SpawnPositions/SpawnPosition.offset = randi()
+	var enemy = EnemyScene.instance()
+	enemy.position = $SpawnPositions/SpawnPosition.position
+	enemy.add_to_group("Enemies")
+	add_child(enemy)
+
+# Función que se ejecuta al
+# darle al botón "Exit".
+func _on_Exit_pressed():
+	get_tree().quit(0)

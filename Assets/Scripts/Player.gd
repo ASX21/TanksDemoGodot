@@ -13,8 +13,10 @@ const FORWARD_SPEED = -5
 const ROTATION_SPEED = 1.25
 # Velocidad de rotación de la torreta
 const TURRET_ROTATION_SPEED = 2.25
-# Tiempo de recarga
-const RELOAD_TIME = 1.5
+# Tiempo de recarga del APFSDS
+const RELOAD_TIME_AP = 3
+# Tiempo de recarga del HEAT-FS
+const RELOAD_TIME_HE = 1.5
 
 # Declaración de variables
 
@@ -22,7 +24,7 @@ const RELOAD_TIME = 1.5
 var speed = 0
 # Salud del jugador
 var health
-# Variable que nos da acceso a la interfaz
+# Interfaz del jugador
 var ui
 
 # La palabra clave "export" permite cambiar
@@ -37,8 +39,12 @@ export (PackedScene) var ui_scene
 export (PackedScene) var projectile
 # Declaración de señales
 
-# Señal de muerte del jugador
+# Muerte del jugador
 signal player_died
+
+# Disparo con el
+# tiempo de recarga
+# como parámetro.
 signal shot(time)
 
 # La función ready se ejecuta cuando
@@ -105,14 +111,29 @@ func _process(delta):
 	# velocidad actual del vehículo. El resultado de esto va a ser en
 	# cuánto va a cambiar su posición.
 	position += Vector2(-sin(rotation), cos(rotation)).normalized() * speed
+	
+	# Limitamos la posición del jugador
+	# para que no pueda salir del mapa.
+	# Los números son simplemente las
+	# coordenadas del límite del mapa.
 	position.x = clamp(position.x, 0, 3328)
 	position.y = clamp(position.y, 0, 2304)
+	
+	# Comprobamos si se está presionando
+	# el click izquierdo del ratón.
 	if Input.is_mouse_button_pressed(1):
+		# Llamamos a la función disparar AP
 		shoot_ap()
-		emit_signal("shot", RELOAD_TIME)
+		# Emitimos la señal "shot"
+		emit_signal("shot", RELOAD_TIME_AP)
+	
+	# Comprobamos si se está presionando
+	# el click derecho del ratón.
 	elif Input.is_mouse_button_pressed(2):
+		# Llamamos a la función disparar HE
 		shoot_he()
-		emit_signal("shot", RELOAD_TIME)
+		# Emitimos la señal "shot"
+		emit_signal("shot", RELOAD_TIME_HE)
 
 
 # Función que rota la torreta
@@ -142,7 +163,7 @@ func rotate_turret(delta):
 	# el valor del eje y del vector como primer parámetro y
 	# el valor del eje x como segundo parámetro. El resultado
 	# es el ángulo que forma el vector con el eje X.
-	var angle = (atan2(target_vect.y, target_vect.x))
+	var angle = atan2(target_vect.y, target_vect.x)
 	
 	# Obtenemos la rotación de la torreta
 	# y la guardamos en una variable
