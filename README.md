@@ -1,5 +1,6 @@
 <h1>Demo de tanques de Godot</h1>
 <p>Demostración creada como recurso de aprendizaje de Godot Engine. Código completamente abierto.</p><p><b>Usada la extensión para Godot de GitHub.</b></p>
+<a href="https://godotengine.org/download">Descarga Godot aquí. Versión del proyecto: 3.4</a>
 <h2>Introducción al sistema de nodos</h2>
 <p>Godot emplea un sistema de jerarquía de nodos donde una escena puede ser cualquier rama de nodos. ¿Qué significa esto?</p>
 <ol>
@@ -18,7 +19,7 @@
 				<li>PMDM</li>
 			</ul>
 		</li>
-		<li>Tarea Marzo 1
+		<li>Tarea Marzo 2
 			<ul>
 				<li>ACDA</li>
 				<li>PMDM</li>
@@ -27,3 +28,10 @@
 	</ul>
 	</li>
 </ul>
+<hr>
+<h2>Godot</h2>
+<h3>Cargando el proyecto</h3>
+<hr>
+<h3>La interfaz del editor</h3>
+<hr>
+<h3>El lenguaje de progamación de Godot</h3>

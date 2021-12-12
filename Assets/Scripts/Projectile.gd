@@ -1,11 +1,20 @@
 extends Node2D
 
+# Declaración de constantes
 
+# Velocidad del movimiento del proyectil
 const SPEED = -400
 
+# Función que es llamada
+# al ser instanciado
+# un proyectil.
 func _ready():
+	# Activamos la emisión
+	# del humo del proyectil.
 	$Smoke.emitting = true
 
+# Función llamada al principio de cada
+# fotograma. Más detalle en la escena Player.
 func _process(delta):
 	# Desplazamos el proyectil teniendo en cuenta su rotación
 	position += Vector2(-sin(rotation), cos(rotation)).normalized() * delta * SPEED

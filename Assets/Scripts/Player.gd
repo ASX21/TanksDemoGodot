@@ -6,15 +6,20 @@ class_name Player
 # Aceleración y desaceleración
 const ACCEL = 2
 const DECEL = 1
+
 # Velocidades máxima en reversa y hacia adelante
 const BACKWARD_SPEED = 3
 const FORWARD_SPEED = -5
+
 # Velocidad de rotación del vehículo
 const ROTATION_SPEED = 1.25
+
 # Velocidad de rotación de la torreta
 const TURRET_ROTATION_SPEED = 2.25
+
 # Tiempo de recarga del APFSDS
 const RELOAD_TIME_AP = 3
+
 # Tiempo de recarga del HEAT-FS
 const RELOAD_TIME_HE = 1.5
 
@@ -230,21 +235,32 @@ func rotate_turret(delta):
 	$Sprites/Turret.global_rotation = lerp(turret_rot, angle, delta * ROTATION_SPEED)
 
 # Función que se ejecuta al hacer click izquierdo.
-# Representa un proyectil APFSDS, que al ser muy
-# rápido en la vida real, se usa un raycast
-# en vez de usar un proyectil físico.
-# A IMPLEMENTAR
-func shoot_ap():
-	pass
-	
-# Función que se ejecuta al hacer click derecho.
 # Representa un proyectil HEAT-FS, que al ser
 # más lento, se usa un proyectil físico.
 func shoot_he():
+	
+	# Creamos una instancia del proyectil
 	var proj = ProjectileScene.instance()
+	
+	# Ponemos la posición en el extremo del cañón
 	proj.global_position = $Sprites/Turret/Cannon/ShootPosition.global_position
+	
+	# Lo rotamos de forma que tenga la dirección y sentido del cañón
 	proj.global_rotation = $Sprites/Turret/Cannon/ShootPosition.global_rotation
+	
+	# Añadimos el proyectil al nodo raíz.
+	# De esta forma, si el jugador se mueve
+	# no lo hace el proyectil con él.
 	get_tree().get_root().get_node("Root").add_child(proj)
+
+# Función que se ejecuta al hacer click derecho.
+# Representa un proyectil APFSDS, que al ser muy
+# rápido en la vida real, se usa un raycast
+# en vez de usar un proyectil físico.
+# A IMPLEMENTAR.
+func shoot_ap():
+	pass # Palabra clave que se usa para
+	# que no de error tener una función vacía.
 
 # Sobreescribimos la función
 # get_class(), ya que por
@@ -257,12 +273,23 @@ func get_class():
 # Función que se ejecuta al
 # ser impactado el jugador
 func player_hit():
+	
+	# Le restamos uno de vida
 	health -= 1
+	
+	# Reflejamos el daño
+	# en la barra de salud.
+	ui.damage(1)
+	
+	# Si la salud es 0,
+	# emitimos la señal
+	# de jugador muerto.
 	if health == 0:
 		emit_signal("player_died")
 
 # Función que se ejecuta cada vez que
 # el jugador detecta un área entrando.
 func _on_HitDetector_area_entered(area):
+	
 	# Llamamos a la función de jugador impactado
 	player_hit()

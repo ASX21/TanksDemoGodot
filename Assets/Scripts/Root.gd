@@ -119,9 +119,21 @@ func end_game():
 # de la curva definida en SpawnPositions.
 func _on_Spawner_timeout():
 	
+	# Colocamos el punto de aparición del enemigo
+	# en un punto aleatorio de la curva.
 	$SpawnPositions/SpawnPosition.offset = randi()
+	
+	# Instanciamos un enemigo
 	var enemy = EnemyScene.instance()
+	
+	# Lo ubicamos en el punto aleatorio de la curva
 	enemy.position = $SpawnPositions/SpawnPosition.position
+	
+	# Añadimos el enemigo
+	# al grupo de enemigos.
 	enemy.add_to_group("Enemies")
+	
+	# Añadimos el enemigo
+	# a la escena actual.
 	add_child(enemy)
 
