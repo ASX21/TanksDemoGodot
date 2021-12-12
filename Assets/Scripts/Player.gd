@@ -22,10 +22,18 @@ const RELOAD_TIME_HE = 1.5
 
 # Velocidad actual del vehículo
 var speed = 0
+
 # Salud del jugador
 var health
+
 # Interfaz del jugador
 var ui
+
+# Mira que destaca la posición del ratón
+var sight
+
+# Tiempo restante de recarga
+var reload
 
 # La palabra clave "export" permite cambiar
 # el valor de la variable desde el editor.
@@ -34,9 +42,11 @@ var ui
 # entre paréntesis con el nombre de la clase.
 
 # Escena empaquetada que contiene la interfaz del jugador
-export (PackedScene) var ui_scene
+export (PackedScene) var UIScene
+
 # Escena empaquetada que representa un proyectil
-export (PackedScene) var projectile
+export (PackedScene) var ProjectileScene
+
 # Declaración de señales
 
 # Muerte del jugador
@@ -50,13 +60,16 @@ signal shot(time)
 # La función ready se ejecuta cuando
 # se crea una instancia del jugador.
 func _ready():
+	# Ponemos el tiempo de recarga a 0 para poder disparar
+	reload = 0
 	# Ponemos la salud del jugador a su valor inicial
 	health = 10
 	# Creamos una instancia de la escena 
-	ui = ui_scene.instance()
+	ui = UIScene.instance()
 	ui.set_health(health)
 	self.connect("shot", ui, "shot")
 	self.add_child(ui)
+	sight = ui.get_sight()
 
 # Esta función es llamada una vez por fotograma.
 # El parámetro delta es el tiempo transcurrido entre el fotograma actual y el anterior.
@@ -119,21 +132,46 @@ func _process(delta):
 	position.x = clamp(position.x, 0, 3328)
 	position.y = clamp(position.y, 0, 2304)
 	
-	# Comprobamos si se está presionando
-	# el click izquierdo del ratón.
-	if Input.is_mouse_button_pressed(1):
-		# Llamamos a la función disparar AP
-		shoot_ap()
-		# Emitimos la señal "shot"
-		emit_signal("shot", RELOAD_TIME_AP)
+	# Comprobamos si podemos disparar,
+	# es decir, el tiempo de recarga
+	# está a cero. También se puede
+	# hacer con un temporizador.
+	if reload <= 0:
+		
+		# Comprobamos si se está presionando
+		# el click izquierdo del ratón.
+		if Input.is_mouse_button_pressed(1):
+			
+			# Llamamos a la función disparar AP
+			shoot_ap()
+			
+			# Emitimos la señal "shot"
+			emit_signal("shot", RELOAD_TIME_AP)
+			
+			# Ponemos el tiempo restante
+			# para disparar de nuevo al
+			# valor del tiempo de recarga.
+			reload = RELOAD_TIME_AP
+		
+		# Comprobamos si se está presionando
+		# el click derecho del ratón.
+		elif Input.is_mouse_button_pressed(2):
+			
+			# Llamamos a la función disparar HE
+			shoot_he()
+			
+			# Emitimos la señal "shot"
+			emit_signal("shot", RELOAD_TIME_HE)
+			
+			# Ponemos el tiempo restante
+			# para disparar de nuevo al
+			# valor del tiempo de recarga.
+			reload = RELOAD_TIME_HE
 	
-	# Comprobamos si se está presionando
-	# el click derecho del ratón.
-	elif Input.is_mouse_button_pressed(2):
-		# Llamamos a la función disparar HE
-		shoot_he()
-		# Emitimos la señal "shot"
-		emit_signal("shot", RELOAD_TIME_HE)
+	# Al no poder disparar, restamos
+	# el tiempo que ha transcurrido
+	else:
+		reload -= delta
 
 
 # Función que rota la torreta
@@ -148,9 +186,13 @@ func rotate_turret(delta):
 	var mouse_position = get_global_mouse_position()
 	
 	# Movemos la mira a la ubicación del
-	# ratón y reiniciamos su rotación
-	$Sight.global_position = mouse_position
-	$Sight.global_rotation = 0
+	# ratón y reiniciamos su rotación.
+	# En este caso no usamos la ubicación
+	# global del ratón, sino su posición
+	# en la pantalla mediante la
+	# obtención primero del Viewport.
+	sight.global_position = get_viewport().get_mouse_position()
+	sight.global_rotation = 0
 	
 	# Calculamos el vector que une la posición
 	# del ratón y la posición de la torreta.
@@ -191,6 +233,7 @@ func rotate_turret(delta):
 # Representa un proyectil APFSDS, que al ser muy
 # rápido en la vida real, se usa un raycast
 # en vez de usar un proyectil físico.
+# A IMPLEMENTAR
 func shoot_ap():
 	pass
 	
@@ -198,7 +241,10 @@ func shoot_ap():
 # Representa un proyectil HEAT-FS, que al ser
 # más lento, se usa un proyectil físico.
 func shoot_he():
-	pass
+	var proj = ProjectileScene.instance()
+	proj.global_position = $Sprites/Turret/Cannon/ShootPosition.global_position
+	proj.global_rotation = $Sprites/Turret/Cannon/ShootPosition.global_rotation
+	get_tree().get_root().get_node("Root").add_child(proj)
 
 # Sobreescribimos la función
 # get_class(), ya que por
@@ -207,3 +253,16 @@ func shoot_he():
 # devuelva "Player".
 func get_class():
 	return "Player"
+
+# Función que se ejecuta al
+# ser impactado el jugador
+func player_hit():
+	health -= 1
+	if health == 0:
+		emit_signal("player_died")
+
+# Función que se ejecuta cada vez que
+# el jugador detecta un área entrando.
+func _on_HitDetector_area_entered(area):
+	# Llamamos a la función de jugador impactado
+	player_hit()

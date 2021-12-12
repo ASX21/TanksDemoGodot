@@ -15,3 +15,6 @@ func damage(dmg):
 func shot(time):
 	$Tween.interpolate_property($ReloadBar, "value", 0, $ReloadBar.max_value, time)
 	$Tween.start()
+
+func get_sight():
+	return $Sight

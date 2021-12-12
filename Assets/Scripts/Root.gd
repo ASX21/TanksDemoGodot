@@ -88,8 +88,12 @@ func end_game():
 	# Mostramos el menú principal
 	$Menus/MainMenu.show()
 	
+	# Ocultamos el botón de pausa
+	$Menus/InGame.hide()
+	
 	# Detenemos el temporizador
 	$Spawner.stop()
+	
 	# Este bucle recorre cada uno
 	# de los elementos hijos de Root.
 	for child in self.get_children():

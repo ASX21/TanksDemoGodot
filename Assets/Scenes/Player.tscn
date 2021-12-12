@@ -5,14 +5,15 @@
 [ext_resource path="res://Assets/Sprites/PlayerCannon.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Scripts/Player.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Scenes/Player UI.tscn" type="PackedScene" id=5]
-[ext_resource path="res://icon.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Scenes/Projectile.tscn" type="PackedScene" id=6]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 45, 97 )
 
 [node name="Player" type="Node2D"]
 script = ExtResource( 4 )
-ui_scene = ExtResource( 5 )
+UIScene = ExtResource( 5 )
+ProjectileScene = ExtResource( 6 )
 
 [node name="Sprites" type="Node2D" parent="."]
 scale = Vector2( 0.5, 0.5 )
@@ -44,11 +45,10 @@ drag_margin_top = 0.4
 drag_margin_right = 0.4
 drag_margin_bottom = 0.4
 
-[node name="Sight" type="Sprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 6 )
-
 [node name="HitDetector" type="Area2D" parent="."]
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitDetector"]
 shape = SubResource( 1 )
+
+[connection signal="area_entered" from="HitDetector" to="." method="_on_HitDetector_area_entered"]
