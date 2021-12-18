@@ -5,7 +5,32 @@ Demostración creada como recurso de aprendizaje de Godot Engine. Código comple
 
 
 [Descarga Godot aquí. Versión del proyecto: 3.4](https://godotengine.org/download)
+
+## Contenidos
+
+- [Introducción al sistema de nodos](#introducción-al-sistema-de-nodos)
+
+- [Godot](#godot)
+  - [Cargando el proyecto](#cargando-el-proyecto)
+  - [La interfaz del editor](#la-interfaz-del-editor)
+    - [El panel de escena](#el-panel-de-escena)
+    - [El panel de archivos](#el-panel-de-archivos)
+    - [El inspector](#el-inspector)
+    - [Las señales y grupos](#las-señales-y-grupos)
+      - [Señales](#señales)
+      - [Grupos](#grupos)
+
+- [Programación en Godot](#progamación-en-godot)
+  - [GDScript](#gdscript)
+    - [Variables](#variables)
+    - [Constantes](#constantes)
+    - [Funciones](#funciones)
+    - [Estructuras de control](#estructuras-de-control)
+
+---
+
 ## Introducción al sistema de nodos
+
 Godot emplea un sistema de jerarquía de nodos donde una escena puede ser cualquier rama de nodos. ¿Qué significa esto?
 
 
