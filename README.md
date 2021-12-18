@@ -65,6 +65,9 @@ Esta es la interfaz que usaremos para hacer juegos. No tiene absolutamente todas
 
 Mirando la imagen, lo que más llama la atención es el panel con la escena actual. También, al seleccionar un script, se abrirá ahí el editor de texto integrado en Godot.
 
+![](ReadMeImages/CodeEditor.png)
+
+> Pro-tip: En el editor de código puedes mantener Control y darle click a un método o clase para ir directamente a su apartado de la documentación.
 #### El panel de escena
 Este panel situado a la izquierda muestra el árbol de nodos de la escena actual. Para poder ver todo más fácilmente podemos plegar o desplegar cualquier rama de nodos en la escena.
 
@@ -73,7 +76,11 @@ Con click derecho puedes agregar un nodo hijo al nodo seleccionado. Además, con
 ![](ReadMeImages/ScenePanel.png)
 #### El panel de archivos
 
-Debajo del panel anterior se encuentra el de archivos. En este podemos navegar las carpetas del proyecto. Es recomendable organizar correctamente los archivos del juego para facilitar encontrarlos en el futuro. Normalmente, a la carpeta que contiene los recursos del juego (Sprites, Scripts, Escenas, sonido, etc.) se le llama Assets. En proyectos más grandes puede ser recomendable dividir más aún las carpetas.
+Debajo del panel anterior se encuentra el de archivos. En este podemos navegar las carpetas del proyecto. Es recomendable organizar correctamente los archivos del juego para facilitar encontrarlos en el futuro. 
+
+Normalmente, a la carpeta que contiene los recursos del juego (Sprites, Scripts, Escenas, sonido, etc.) se le llama Assets. En proyectos más grandes puede ser recomendable dividir más aún las carpetas.
+
+![](ReadMeImages/Archivos.png)
 
 #### El inspector
 
@@ -84,7 +91,7 @@ Esto es porque los nodos que puedes usar (e incluso puedes crear los tuyos propi
 Esto se refiere a la estructura y comportamiento. No es lo mismo un Node2D, que es el nodo genérico para uso en 2D que Node3D, su equivalente en 3D. Sin embargo, ambos tienen unas características en común que heredan de Node, el nodo base de todos los demás tipos.
 
 ![](ReadMeImages/Inspector.png)
-**Pequeña nota: en el inspector podemos ver también las variables con la palabra clave "export" añadidas en el código. De esta forma podemos darle valor a través del editor. Se puede ver por ejemplo en la captura superior. Los campos Ui Scene y Projectile Scene son variables del script asociado al nodo.**
+> Pequeña nota: en el inspector podemos ver también las variables con la palabra clave "export" añadidas en el código. De esta forma podemos darle valor a través del editor. Se puede ver por ejemplo en la captura superior. Los campos Ui Scene y Projectile Scene son variables del script asociado al nodo.
 
 #### Las señales y grupos
 
@@ -99,12 +106,84 @@ Las señales sirven para notificar de que algo ha ocurrido de uno nodo a otro. P
 ##### Grupos
 Los grupos sirven para clasificar nodos. Podemos por ejemplo hacer un grupo de enemigos y que cuando uno nos vea, todos sean alertados. Esta es una de las funcionalidades de los grupos.
 
-![]()
+![](ReadMeImages/NodeGroups.png)
 
 ---
 
-### El lenguaje de progamación de Godot
+## Progamación en Godot
 
 #### GDScript
 
 GDScript es el lenguaje de programación principal para Godot Engine. Es similar a Python, con la distinción de que en GDScript es necesario declarar las variables.
+
+Para abrir un Script, busca un nodo que contenga un Script, por ejemplo, Root:
+
+![](ReadMeImages/NodeWithScript.png)
+
+Para abrir el Script asociado, dale click al icono con forma de hoja de papel. También puedes darle click al nodo y en el inspector descender hasta encontrar la propiedad del Script:
+
+![](ReadMeImages/ScriptProperty.png)
+
+### Variables
+
+Las variables sirven para almacenar datos y pueden ser de cualquier tipo. Por ejemplo, es bastante común en videojuegos usar vectores. Dependiendo del tipo de juego, serán vectores 2D o 3D.
+
+Declarando e inicializando después:
+
+	var salud
+
+	salud = 10
+
+O declarando e inicializando en una línea:
+
+	var salud = 10
+
+Variables de otros tipos:
+
+	var x = 10
+
+	var y = 5
+
+	var posicion = Vector2(x, y)
+
+### Constantes
+
+Si lo que necesitas es un valor que no va a cambiar en ningún momento, lo que necesitas usar es una *constante*:
+
+	const VELOCIDAD = 5.0
+
+> Por convenio, las constantes se ponen en mayúsculas.
+
+### Funciones
+
+Si tienes un fragmento de código que necesites ejecutar varias veces, normalmente se crea una *función*:
+
+	func mover():
+		self.position += desplazamiento
+
+Las funciones pueden tener parámetros y devolver un valor:
+
+	func sumar(num1, num2):
+		return num1 + num2
+
+A la hora de programar debes tener en cuenta la indentación. El código dentro de la función es el código que tiene una tabulación más que la función.
+
+En cuanto hay una línea al mismo nivel que la función (o estructuras de control, en el siguiente paso) significa que ese bloque ha terminado.
+
+Esto es importante, porque las variables solo pueden ser usadas en el bloque en el que se han creado.
+
+	func funcion1():
+		var a = 3
+	
+	# Esto da error
+	func funcion2():
+		a = 2
+
+### Estructuras de control
+
+Si has programado antes ya las reconocerás. La más básica de ellas es el if o sentencia condicional.
+
+	if condicion:
+		codigo_a_ejecutar
+		...
+
