@@ -25,6 +25,8 @@ Demostración creada como recurso de aprendizaje de Godot Engine. Código comple
     - [Variables](#variables)
     - [Constantes](#constantes)
     - [Funciones](#funciones)
+    - [Operadores](#los-operadores)
+    - [Operadores booleanos](#operaciones-booleanas)
     - [Estructuras de control](#estructuras-de-control)
 
 ---
@@ -171,6 +173,8 @@ Variables de otros tipos:
 
 	var posicion = Vector2(x, y)
 
+> Los nombres de variables, constantes o funciones **NUNCA** empiezan por un número.
+
 ### Constantes
 
 Si lo que necesitas es un valor que no va a cambiar en ningún momento, lo que necesitas usar es una *constante*:
@@ -204,11 +208,154 @@ Esto es importante, porque las variables solo pueden ser usadas en el bloque en 
 	func funcion2():
 		a = 2
 
+### Los operadores
+
+Hay varias operaciones básicas que puedes realizar fácilmente.
+
+	var a := 2
+	var b := 3
+
+	# Suma
+	var c = a + b 
+	# c = 5
+
+	c += a
+	# c = 7
+
+	# Resta
+	c = b - a
+	# c = 1
+
+	c -= a
+	# c = -1
+
+	# Multiplicación
+	c = a * b
+	# c = 6
+
+	c *= a
+	# c = 12
+
+	# División entera
+	c = b / a
+	# c = 1
+
+	c /= a
+	# c = 0
+
+	# División
+	c = b / 2.0
+	# c = 1.5
+
+	c /= 2.0
+	# c = 0.75
+
+	# Resto o módulo
+	# Es el resto de la división b / a
+	c = b % a
+	# c = 1
+
+	c %= a
+	# c = 1
+
+
+> Probablemente te hayas dado cuenta del uso de ":=" en vez de "=". Se emplea cuando se inicializa y declara la variable en una misma línea. Lo que hace es impedir que se pueda cambiar el tipo de la variable, lo cuál minimiza el riesgo de errores. Otra forma de hacerlo sería:
+
+	var a : int = 2
+	var b : int = 3
+
+	# O si vas a inicializarlas más tarde
+
+	var c : int
+
+	# Se puede hacer con cualquier clase
+
+	var direccion := Vector2(10, -5.0)
+	var nombre := "Juan"
+
+	# Lo mismo que
+
+	var direccion2 : Vector2
+	var nombre2 : str
+
+	direccion2 = Vector2(10, -5.0)
+	nombre2 = "Juan"
+
+### Operaciones booleanas
+
+Son operaciones que devuelven verdadero o falso. Se usan en estructuras de control como if-elif-else o bucles.
+
+	var a := 2
+	var b := 3
+
+	# Mayor
+	var c = (a > b)
+	# c = false
+
+	# Menor
+	c = (a < b)
+	# c = true
+
+	# Mayor o igual
+	c = (a >= b)
+	# c = false
+
+	# Menor o igual
+	c = (a <= b)
+	# c = true
+	
+	# Igualdad
+	c = (a == b)
+	# c = false
+
+	# Desigualdad
+	c = (a != b)
+	# c = true
+
+
 ### Estructuras de control
 
 Si has programado antes ya las reconocerás. La más básica de ellas es el if o sentencia condicional.
 
 	if condicion:
-		codigo_a_ejecutar
+		# Código a ejecutar si se cumple
+		...
+			
+	# El programa sigue por aquí, después del bloque condicional
+	...
+
+También existe la sentencia if-else. Si la condición del primer bloque **no** se cumple, se ejecutará el bloque else.
+
+	if condicion:
+		# Código a ejecutar si se cumple
 		...
 
+	else:
+		# Código a ejecutar si no se cumple
+		...
+
+	# El programa sigue por aquí, después del bloque condicional
+	...
+
+Por último, puedes usar elif. Sirve para evaluar otras condiciones que comprueban si la condición de la sentencia "if" o la sentencia "elif" anterior (en caso de haber varias) **no** se cumplen.
+
+	if condicion:
+		# Código a ejecutar si se cumple
+		...
+
+	elif otra_condicion:
+		# Código a ejecutar si se cumple
+		...
+
+	elif otra_condicion_distinta:
+		# Código a ejecutar si se cumple
+		...
+
+	else:
+		# Código a ejecutar si no se cumple nada de lo anterior
+		...
+
+	# El programa sigue por aquí, después del bloque condicional
+	...
+
+> Importante, la condición tanto aquí como en bucles debe devolver verdadero o falso. Generalmente será una comparación, es decir, si dos valores son iguales, uno es mayor que otro, etc.
